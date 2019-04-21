@@ -1,3 +1,4 @@
+com/dlr/ciscoware_ws/v1/resources/impl/OrdersResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/CustomerAddress.class
 com/dlr/ciscoware_ws/v1/resources/Customer.class
 com/dlr/ciscoware_ws/v1/resources/BranchAddress.class
@@ -12,15 +13,15 @@ com/dlr/ciscoware_ws/RestJsonApplication.class
 com/dlr/ciscoware_ws/v1/resources/Password.class
 com/dlr/ciscoware_ws/v1/resources/Admin_.class
 com/dlr/ciscoware_ws/v1/resources/Customer_.class
+com/dlr/ciscoware_ws/v1/resources/Orders_.class
 com/dlr/ciscoware_ws/v1/resources/ProductOrder.class
+com/dlr/ciscoware_ws/v1/resources/Orders.class
 com/dlr/ciscoware_ws/v1/resources/Product_.class
 com/dlr/ciscoware_ws/v1/resources/AdminResource.class
 com/dlr/ciscoware_ws/v1/resources/Product.class
 com/dlr/ciscoware_ws/v1/resources/Inventory.class
 com/dlr/ciscoware_ws/v1/resources/impl/CustomerResourceImpl.class
-com/dlr/ciscoware_ws/v1/resources/Order1.class
 com/dlr/ciscoware_ws/v1/resources/Branch.class
-com/dlr/ciscoware_ws/v1/resources/Order1_.class
 com/dlr/ciscoware_ws/v1/resources/BranchAddress_.class
 com/dlr/ciscoware_ws/v1/resources/Admin.class
 com/dlr/ciscoware_ws/v1/resources/CustomerAddress_.class
@@ -29,5 +30,6 @@ com/dlr/ciscoware_ws/v1/resources/ProductResource.class
 com/dlr/ciscoware_ws/v1/resources/impl/ProductResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/Password_.class
 com/dlr/ciscoware_ws/v1/resources/ProductOrder_.class
+com/dlr/ciscoware_ws/v1/resources/OrdersResource.class
 com/dlr/ciscoware_ws/v1/resources/CustomerResource.class
 com/dlr/ciscoware_ws/v1/resources/User.class

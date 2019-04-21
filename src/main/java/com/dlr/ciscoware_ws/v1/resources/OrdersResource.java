@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 public interface OrdersResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    List<Orders> getOrder();
+    List<Orders> getAllOrders();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
