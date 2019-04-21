@@ -6,10 +6,8 @@
 package com.dlr.ciscoware_ws.v1.resources;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,31 +18,28 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author alex
  */
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Order1.findAll", query = "SELECT o FROM Order1 o")
-    , @NamedQuery(name = "Order1.findById", query = "SELECT o FROM Order1 o WHERE o.id = :id")
-    , @NamedQuery(name = "Order1.findByOrderDate", query = "SELECT o FROM Order1 o WHERE o.orderDate = :orderDate")
-    , @NamedQuery(name = "Order1.findByDeliveryDate", query = "SELECT o FROM Order1 o WHERE o.deliveryDate = :deliveryDate")
-    , @NamedQuery(name = "Order1.findByTotalCost", query = "SELECT o FROM Order1 o WHERE o.totalCost = :totalCost")
-    , @NamedQuery(name = "Order1.findByModifiedDate", query = "SELECT o FROM Order1 o WHERE o.modifiedDate = :modifiedDate")})
-public class Order1 implements Serializable {
+    @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o")
+    , @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id")
+    , @NamedQuery(name = "Orders.findByOrderDate", query = "SELECT o FROM Orders o WHERE o.orderDate = :orderDate")
+    , @NamedQuery(name = "Orders.findByDeliveryDate", query = "SELECT o FROM Orders o WHERE o.deliveryDate = :deliveryDate")
+    , @NamedQuery(name = "Orders.findByTotalCost", query = "SELECT o FROM Orders o WHERE o.totalCost = :totalCost")
+    , @NamedQuery(name = "Orders.findByModifiedDate", query = "SELECT o FROM Orders o WHERE o.modifiedDate = :modifiedDate")})
+public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -71,8 +66,6 @@ public class Order1 implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "status")
     private String status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
-    private Collection<ProductOrder> productOrderCollection;
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     @ManyToOne
     private Branch branchId;
@@ -80,14 +73,14 @@ public class Order1 implements Serializable {
     @ManyToOne(optional = false)
     private Customer customerId;
 
-    public Order1() {
+    public Orders() {
     }
 
-    public Order1(Integer id) {
+    public Orders(Integer id) {
         this.id = id;
     }
 
-    public Order1(Integer id, Date orderDate, double totalCost) {
+    public Orders(Integer id, Date orderDate, double totalCost) {
         this.id = id;
         this.orderDate = orderDate;
         this.totalCost = totalCost;
@@ -141,16 +134,6 @@ public class Order1 implements Serializable {
         this.status = status;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public Collection<ProductOrder> getProductOrderCollection() {
-        return productOrderCollection;
-    }
-
-    public void setProductOrderCollection(Collection<ProductOrder> productOrderCollection) {
-        this.productOrderCollection = productOrderCollection;
-    }
-
     public Branch getBranchId() {
         return branchId;
     }
@@ -177,10 +160,10 @@ public class Order1 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Order1)) {
+        if (!(object instanceof Orders)) {
             return false;
         }
-        Order1 other = (Order1) object;
+        Orders other = (Orders) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -189,7 +172,7 @@ public class Order1 implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dlr.ciscoware_ws.v1.resources.Order1[ id=" + id + " ]";
+        return "com.dlr.ciscoware_ws.v1.resources.Orders[ id=" + id + " ]";
     }
     
 }

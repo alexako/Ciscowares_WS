@@ -36,6 +36,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Branch.findByName", query = "SELECT b FROM Branch b WHERE b.name = :name")})
 public class Branch implements Serializable {
 
+    @OneToMany(mappedBy = "branchId")
+    private Collection<Orders> ordersCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +53,7 @@ public class Branch implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchId")
     private Collection<Admin> adminCollection;
     @OneToMany(mappedBy = "branchId")
-    private Collection<Order1> order1Collection;
+    private Collection<Orders> order1Collection;
 
     public Branch() {
     }
@@ -97,11 +100,11 @@ public class Branch implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Order1> getOrder1Collection() {
+    public Collection<Orders> getOrder1Collection() {
         return order1Collection;
     }
 
-    public void setOrder1Collection(Collection<Order1> order1Collection) {
+    public void setOrder1Collection(Collection<Orders> order1Collection) {
         this.order1Collection = order1Collection;
     }
 
@@ -128,6 +131,16 @@ public class Branch implements Serializable {
     @Override
     public String toString() {
         return "com.dlr.ciscoware_ws.v1.resources.Branch[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Orders> getOrdersCollection() {
+        return ordersCollection;
+    }
+
+    public void setOrdersCollection(Collection<Orders> ordersCollection) {
+        this.ordersCollection = ordersCollection;
     }
     
 }

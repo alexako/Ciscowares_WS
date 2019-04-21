@@ -38,6 +38,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     , @NamedQuery(name = "Customer.findByPhoneNumber", query = "SELECT c FROM Customer c WHERE c.phoneNumber = :phoneNumber")})
 public class Customer implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +55,7 @@ public class Customer implements Serializable {
     @ManyToOne(optional = false)
     private User userId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Order1> order1Collection;
+    private Collection<Orders> ordersCollection;
 
     public Customer() {
     }
@@ -98,12 +100,12 @@ public class Customer implements Serializable {
 
     @XmlTransient
     @JsonIgnore
-    public Collection<Order1> getOrder1Collection() {
-        return order1Collection;
+    public Collection<Orders> getOrder1Collection() {
+        return ordersCollection;
     }
 
-    public void setOrder1Collection(Collection<Order1> order1Collection) {
-        this.order1Collection = order1Collection;
+    public void setOrder1Collection(Collection<Orders> order1Collection) {
+        this.ordersCollection = order1Collection;
     }
 
     @Override
@@ -129,6 +131,16 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "com.dlr.ciscoware_ws.v1.resources.Customer[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Orders> getOrdersCollection() {
+        return ordersCollection;
+    }
+
+    public void setOrdersCollection(Collection<Orders> ordersCollection) {
+        this.ordersCollection = ordersCollection;
     }
     
 }
