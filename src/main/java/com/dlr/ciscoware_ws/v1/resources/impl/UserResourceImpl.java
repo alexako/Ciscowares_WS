@@ -25,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/users")
+@Path("/users")
 public class UserResourceImpl implements UserResource {
 
 

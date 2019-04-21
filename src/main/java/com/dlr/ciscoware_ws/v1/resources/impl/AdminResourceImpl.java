@@ -30,7 +30,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/admins")
+@Path("/admins")
 public class AdminResourceImpl implements AdminResource {
 
 

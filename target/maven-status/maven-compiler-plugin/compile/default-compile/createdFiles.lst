@@ -6,6 +6,7 @@ com/dlr/ciscoware_ws/v1/resources/InventoryResource.class
 com/dlr/ciscoware_ws/v1/resources/User_.class
 com/dlr/ciscoware_ws/v1/resources/impl/AdminResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/impl/InventoryResourceImpl.class
+com/dlr/ciscoware_ws/v1/resources/BranchResource.class
 com/dlr/ciscoware_ws/v1/resources/impl/UserResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/Inventory_.class
 com/dlr/ciscoware_ws/v1/resources/Branch_.class
@@ -26,6 +27,7 @@ com/dlr/ciscoware_ws/v1/resources/BranchAddress_.class
 com/dlr/ciscoware_ws/v1/resources/Admin.class
 com/dlr/ciscoware_ws/v1/resources/CustomerAddress_.class
 com/dlr/ciscoware_ws/v1/resources/UserResource.class
+com/dlr/ciscoware_ws/v1/resources/impl/BranchResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/ProductResource.class
 com/dlr/ciscoware_ws/v1/resources/impl/ProductResourceImpl.class
 com/dlr/ciscoware_ws/v1/resources/Password_.class

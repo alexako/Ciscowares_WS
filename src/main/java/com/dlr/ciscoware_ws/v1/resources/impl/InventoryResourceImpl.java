@@ -28,7 +28,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/inventory")
+@Path("/inventory")
 public class InventoryResourceImpl implements InventoryResource {
 
 

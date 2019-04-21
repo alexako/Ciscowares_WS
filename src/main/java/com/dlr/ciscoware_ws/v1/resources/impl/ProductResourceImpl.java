@@ -25,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/products")
+@Path("/products")
 public class ProductResourceImpl implements ProductResource {
 
 

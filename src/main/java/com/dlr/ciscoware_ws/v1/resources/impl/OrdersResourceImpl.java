@@ -34,7 +34,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/orders")
+@Path("/orders")
 public class OrdersResourceImpl implements OrdersResource {
 
 
@@ -332,7 +332,6 @@ public class OrdersResourceImpl implements OrdersResource {
         Orders o = new Orders();
         o.setCustomerId(c);
         o.setBranchId(b);
-        o.setOrderDate(oDate);
         o.setDeliveryDate(dDate);
         o.setTotalCost(obj.getDouble("totalCost"));
         o.setStatus(obj.getString("status"));
@@ -343,7 +342,6 @@ public class OrdersResourceImpl implements OrdersResource {
             String insertQuery = "UPDATE orders SET "
                 + "customer_id = ?,"
                 + "branch_id = ?,"
-                + "order_date = ?,"
                 + "delivery_date = ?,"
                 + "total_cost = ?,"
                 + "status = ?;";
@@ -351,10 +349,9 @@ public class OrdersResourceImpl implements OrdersResource {
             PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
             preparedStmt.setInt(1, o.getCustomerId().getId());
             preparedStmt.setInt(2, o.getBranchId().getId());
-            preparedStmt.setString(3, format.format(o.getOrderDate()));
-            preparedStmt.setString(4, format.format(o.getDeliveryDate()));
-            preparedStmt.setDouble(5, o.getTotalCost());
-            preparedStmt.setString(6, o.getStatus());
+            preparedStmt.setString(3, format.format(o.getDeliveryDate()));
+            preparedStmt.setDouble(4, o.getTotalCost());
+            preparedStmt.setString(5, o.getStatus());
 
             if (preparedStmt.executeUpdate() == 0) {
                 throw new Exception("ERROR: order was not created");

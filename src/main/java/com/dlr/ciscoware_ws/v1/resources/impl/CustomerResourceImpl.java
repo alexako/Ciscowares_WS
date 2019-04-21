@@ -27,7 +27,7 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/v1/customers")
+@Path("/customers")
 public class CustomerResourceImpl implements CustomerResource {
 
 
