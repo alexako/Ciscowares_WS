@@ -178,11 +178,17 @@ public class ProductResourceImpl implements ProductResource {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String deleteQuery = "DELETE FROM product WHERE id=" + id;
+            String inventoryQuery = "DELETE FROM inventory WHERE product_id = " + id;
+            String productOrderQuery = "DELETE FROM product_order WHERE product_id = " + id;
+            String deleteQuery = "DELETE FROM product WHERE id =" + id;
 
+            PreparedStatement inventoryStmt = conn.prepareStatement(inventoryQuery);
+            PreparedStatement productOrderStmt = conn.prepareStatement(productOrderQuery);
             PreparedStatement preparedStmt = conn.prepareStatement(deleteQuery);
 
-            if (preparedStmt.executeUpdate() == 0) {
+            if (inventoryStmt.executeUpdate() == 0
+                    || productOrderStmt.executeUpdate() == 0
+                    || preparedStmt.executeUpdate() == 0) {
                 throw new Exception("ERROR: product was not deleted");
             }
             
