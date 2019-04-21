@@ -52,6 +52,8 @@ public class Inventory implements Serializable {
     @ManyToOne(optional = false)
     private Product productId;
 
+    private Branch branch;
+
     public Inventory() {
     }
 
@@ -87,6 +89,14 @@ public class Inventory implements Serializable {
 
     public void setBranchId(int branchId) {
         this.branchId = branchId;
+    }
+
+    public Branch getBranch() {
+        return this.branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
     public Product getProductId() {
