@@ -3,8 +3,10 @@
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Branch.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Order1.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/impl/UserResourceImpl.java
+/Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/impl/AdminResourceImpl.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Admin.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Customer.java
+/Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/AdminResource.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Inventory.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/RestJsonApplication.java
 /Users/alex/Code/java/Ciscoware_WS/src/main/java/com/dlr/ciscoware_ws/v1/resources/Password.java
