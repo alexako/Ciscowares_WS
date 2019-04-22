@@ -3,21 +3,24 @@ Web Service for Java 3 Final Project
 
 ### Features:
 
+    - Complete RESTful API deployed to an Apache Tomcat server 
     - Get customer data (name, email, phone, address)
     - Get Admin data (name, email, branch)
     - Get product info (name, description, price)
     - Get orders (products, price of each, total, customer address)
     - Get Inventory (products, quantity in each branch)
-    - Add Customer (users, customers, address, passwords)
-    - Add Admin (users, admins, passwords)
-    - Add Order (orders, product_order)
-    - Add Product (products, inventory)
+    - Add/edit/delete Customer (users, customers, address, passwords)
+    - Add/edit/delete Admin (users, admins, passwords)
+    - Add/edit/delete Orders (orders, product_order)
+    - Add/edit/delete Product (products, inventory)
 
 ---
 
 ### API Endpoints
 
-#### Orders
+Base URL: `http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/`
+
+#### Orders `/orders`
 
 `GET` Get all orders
 
@@ -44,7 +47,7 @@ Web Service for Java 3 Final Project
 ```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/orders/{id}```
 
 
-#### Branches
+#### Branches `/branches`
 
 `GET` Get all branches
 
@@ -62,21 +65,54 @@ Web Service for Java 3 Final Project
 
 ```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/branches/{id}```
 
-#### Inventory
+#### Inventory `/inventory`
 
-`/inventory`
+`GET` Get all inventory 
 
-#### Products
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/```
 
-`/products`
+`GET` Get inventory by Product ID
 
-#### Customers
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
 
-`/customers`
+`POST` Add new inventory entry 
 
-#### Admins
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/```
 
-`/admins`
+`PUT` Update inventory by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
+
+`DELETE` Delete inventory by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
+
+#### Products `/products`
+
+`GET` Get all products 
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/```
+
+`GET` Get product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+`POST` Add new product
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/```
+
+`PUT` Update product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+`DELETE` Delete product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+#### Customers `/customers`
+
+#### Admins `/admins`
+
 
 ---
 
@@ -186,7 +222,7 @@ SELECT
 FROM passwords p
 LEFT JOIN users u
 ON p.user_id = u.id;
-    ```
+```
 
 #### All Branches
 
