@@ -3,21 +3,24 @@ Web Service for Java 3 Final Project
 
 ### Features:
 
+    - Complete RESTful API deployed to an Apache Tomcat server 
     - Get customer data (name, email, phone, address)
     - Get Admin data (name, email, branch)
     - Get product info (name, description, price)
     - Get orders (products, price of each, total, customer address)
     - Get Inventory (products, quantity in each branch)
-    - Add Customer (users, customers, address, passwords)
-    - Add Admin (users, admins, passwords)
-    - Add Order (orders, product_order)
-    - Add Product (products, inventory)
+    - Add/edit/delete Customer (users, customers, address, passwords)
+    - Add/edit/delete Admin (users, admins, passwords)
+    - Add/edit/delete Orders (orders, product_order)
+    - Add/edit/delete Product (products, inventory)
 
 ---
 
 ### API Endpoints
 
-#### Orders
+Base URL: `http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/`
+
+#### Orders `/orders`
 
 `GET` Get all orders
 
@@ -44,7 +47,7 @@ Web Service for Java 3 Final Project
 ```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/orders/{id}```
 
 
-#### Branches
+#### Branches `/branches`
 
 `GET` Get all branches
 
@@ -62,21 +65,130 @@ Web Service for Java 3 Final Project
 
 ```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/branches/{id}```
 
+#### Inventory `/inventory`
+
+`GET` Get all inventory 
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/```
+
+`GET` Get inventory by Product ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
+
+`POST` Add new inventory entry 
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/```
+
+`PUT` Update inventory by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
+
+`DELETE` Delete inventory by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/inventory/{id}```
+
+#### Products `/products`
+
+`GET` Get all products 
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/```
+
+`GET` Get product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+`POST` Add new product
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/```
+
+`PUT` Update product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+`DELETE` Delete product by ID
+
+```http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/products/{id}```
+
+#### Customers `/customers`
+
+#### Admins `/admins`
+
+---
+
+### Create/Edit JSON structure examples `POST`/`PUT`
+
+Admin
+
+```js
+{
+	"firstName": "afirst",
+	"lastName": "aLast",
+	"email": "POSTemail@test.com",
+	"role": "admin",
+	"phoneNumber": "777-3213",
+	"password": "adminPassword",
+	"branchId": "1"
+}
+```
+
+Customer
+
+```js
+{
+    "email": "POST@email.com",
+    "firstName": "fPOST",
+    "lastName": "lPOST",
+    "phoneNumber": "654-7654",
+    "city": "Quezon City",
+    "country": "Philippines",
+    "province": "NCR",
+    "street": "123 Post Avenue",
+    "zipCode": "1259",
+    "password": "postpass",
+    "role": "customer"
+}
+```
+
+Product
+
+```js
+{
+    "description": "Networking cable",
+    "name": "CAT5 16\" 1GB",
+    "price": "215.5"
+}
+```
+
 #### Inventory
 
-`/inventory`
+```js
+{
+    "productId": 1,
+    "quantity": 250,
+    "branchId": 3
+}
+```
 
-#### Products
+#### Order (Must be created before adding productOrders)
 
-`/products`
+```js
+{
+    "customerId": "2",
+    "branchId": "1",
+    "totalCost": "150.25"
+}
+```
 
-#### Customers
+#### ProductOrder (Must create a productOrder for each product of an order)
 
-`/customers`
+```js
+{
+	"productId": 1,
+	"orderId": 3,
+	"quantity": 3
+}
+```
 
-#### Admins
-
-`/admins`
 
 ---
 
@@ -186,7 +298,7 @@ SELECT
 FROM passwords p
 LEFT JOIN users u
 ON p.user_id = u.id;
-    ```
+```
 
 #### All Branches
 

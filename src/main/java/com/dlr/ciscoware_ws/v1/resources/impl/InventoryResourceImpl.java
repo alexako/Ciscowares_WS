@@ -89,7 +89,7 @@ public class InventoryResourceImpl implements InventoryResource {
 
     @Override
     @GET
-    @Path("{id}")
+    @Path("/product/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Inventory> getProduct(@PathParam("id") int id) {
         
@@ -162,7 +162,7 @@ public class InventoryResourceImpl implements InventoryResource {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String insertQuery = "INSERT INTO inventory(product_id, quantity, branch)\n" +
+            String insertQuery = "INSERT INTO inventory(product_id, quantity, branch_id)\n" +
                 "VALUES (?, ?, ?);";
 
             PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
