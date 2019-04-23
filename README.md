@@ -169,13 +169,23 @@ Product
 }
 ```
 
-#### Order
+#### Order (Must be created before adding productOrders)
 
 ```js
 {
     "customerId": "2",
     "branchId": "1",
     "totalCost": "150.25"
+}
+```
+
+#### ProductOrder (Must create a productOrder for each product of an order)
+
+```js
+{
+	"productId": 1,
+	"orderId": 3,
+	"quantity": 3
 }
 ```
 
