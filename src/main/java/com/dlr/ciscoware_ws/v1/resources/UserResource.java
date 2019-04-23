@@ -42,4 +42,7 @@ public interface UserResource {
 
     @POST
     public String login(String data);
+
+    @POST
+    public String changePassword(String data);
 }

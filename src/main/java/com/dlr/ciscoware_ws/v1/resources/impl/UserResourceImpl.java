@@ -265,4 +265,71 @@ public class UserResourceImpl implements UserResource {
         resp.put("message", "Access denied");
         return resp.toString();
     }
+
+    @Override
+    @POST
+    @Path("change-password")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String changePassword(String data) {
+
+        JSONObject obj = new JSONObject(data);
+
+        if (!this.valid(data)) {
+            return "{ \"code\": \"401\" }";
+        }
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            String updateQuery = "UPDATE password p\n" +
+                "INNER JOIN user u\n" +
+                "ON p.user_id = u.id\n" +
+                "SET p.content = ?" +
+                "WHERE u.email = ?" ;
+
+            PreparedStatement preparedStmt = conn.prepareStatement(updateQuery);
+            preparedStmt.setString(1, obj.getString("newPassword"));
+            preparedStmt.setString(2, obj.getString("email"));
+
+            if (preparedStmt.executeUpdate() == 0) {
+                throw new Exception("ERROR: password was not updated");
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return data;
+    }
+
+    private boolean valid(String data) {
+        JSONObject obj = new JSONObject(data);
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	u.email,\n" +
+                "	p.content\n" +
+                "FROM user u\n" +
+                "INNER JOIN password p\n" +
+                "ON u.id = p.user_id;");
+
+            while (result.next()) {
+                if (result.getString(1).equals(obj.getString("email"))
+                        && result.getString(2).equals(obj.getString("password"))) {
+                    return true;
+                }
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return false;
+    }
 }
