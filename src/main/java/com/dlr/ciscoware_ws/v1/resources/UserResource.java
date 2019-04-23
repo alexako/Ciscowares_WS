@@ -39,4 +39,7 @@ public interface UserResource {
 
     @DELETE
     void removeUser(int id);
+
+    @POST
+    public String login(String data);
 }

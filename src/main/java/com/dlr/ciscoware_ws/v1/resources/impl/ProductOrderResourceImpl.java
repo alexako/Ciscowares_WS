@@ -9,7 +9,6 @@ import com.dlr.ciscoware_ws.v1.resources.Orders;
 import com.dlr.ciscoware_ws.v1.resources.Product;
 import com.dlr.ciscoware_ws.v1.resources.ProductOrder;
 import com.dlr.ciscoware_ws.v1.resources.ProductOrderResource;
-import com.dlr.ciscoware_ws.v1.resources.ProductResource;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Path;
@@ -46,22 +45,23 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
-                + "po.id, "
-                + "po.product_id, "
-                + "po.order_id, "
-                + "p.name, "
-                + "p.description, "
-                + "p.price "
-                + "FROM product_order po"
-                + "LEFT JOIN product p"
+                + "po.id,\n"
+                + "po.product_id,\n"
+                + "po.order_id,\n"
+                + "po.quantity,\n"
+                + "p.name,\n"
+                + "p.description,\n"
+                + "p.price\n"
+                + "FROM product_order po\n"
+                + "INNER JOIN product p\n"
                 + "ON po.product_id = p.id");
 
             while (result.next()) {
                 Product p = new Product();
                 p.setId(result.getInt(2));
-                p.setName(result.getString(4));
-                p.setDescription(result.getString(5));
-                p.setPrice(result.getDouble(6));
+                p.setName(result.getString(5));
+                p.setDescription(result.getString(6));
+                p.setPrice(result.getDouble(7));
 
                 Orders o = new Orders();
                 o.setId(result.getInt(3));
@@ -70,6 +70,7 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
                 po.setId(result.getInt(1));
                 po.setProductId(p);
                 po.setOrderId(o);
+                po.setQuantity(result.getInt(4));
                 productOrders.add(po);
             }
             
@@ -104,6 +105,7 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
                 po.setId(result.getInt(1));
                 po.setProductId(p);
                 po.setOrderId(o);
+                po.setQuantity(result.getInt(4));
             }
             
             conn.close();

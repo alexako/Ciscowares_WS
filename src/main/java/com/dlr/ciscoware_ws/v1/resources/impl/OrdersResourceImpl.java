@@ -51,52 +51,56 @@ public class OrdersResourceImpl implements OrdersResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT \n" +
-                "    o.id,\n" +
-                "    o.order_date,\n" +
-                "    o.delivery_date,\n" +
-                "    o.total_cost,\n" +
-                "    p.id,\n" +
-                "    p.name,\n" +
-                "    p.description,\n" +
-                "    po.quantity,\n" +
-                "    p.price,\n" +
-                "    c.user_id,\n" +
-                "    u.email,\n" +
-                "    c.phone_number\n" +
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	o.id,\n" +
+                "	u.id,\n" +
+                "	u.email,\n" +
+                "	u.last_name,\n" +
+                "	u.first_name,\n" +
+                "	c.phone_number,\n" +
+                "	b.id,\n" +
+                "	b.name,\n" +
+                "	order_date,\n" +
+                "	delivery_date,\n" +
+                "	o.status,\n" +
+                "	SUM(p.price * po.quantity) total\n" +
                 "FROM orders o\n" +
-                "LEFT JOIN product_order po\n" +
+                "INNER JOIN product_order po\n" +
                 "ON po.order_id = o.id\n" +
-                "LEFT JOIN product p\n" +
+                "INNER JOIN product p\n" +
                 "ON po.product_id = p.id\n" +
-                "LEFT JOIN customer c\n" +
+                "INNER JOIN customer c\n" +
                 "ON o.customer_id = c.id\n" +
-                "LEFT JOIN user u\n" +
-                "ON c.user_id = u.id;"); 
+                "INNER JOIN user u\n" +
+                "ON c.user_id = u.id\n" +
+                "INNER JOIN branch b\n" +
+                "ON o.branch_id = b.id\n" +
+                "GROUP BY o.id;"); 
 
             while (result.next()) {
-                Product p = new Product();
-                p.setId(result.getInt(5));
-                p.setName(result.getString(6));
-                p.setDescription(result.getString(7));
-                p.setPrice(result.getDouble(9));
-
-                ProductOrder po = new ProductOrder();
-                po.setQuantity(result.getInt(8));
 
                 User u = new User();
-                u.setId(result.getInt(10));
-                u.setEmail(result.getString(11));
+                u.setId(result.getInt(2));
+                u.setEmail(result.getString(3));
+                u.setLastName(result.getString(4));
+                u.setFirstName(result.getString(5));
 
                 Customer c = new Customer();
                 c.setUserId(u);
-                c.setPhoneNumber(result.getString(12));
+                c.setPhoneNumber(result.getString(6));
+                
+                Branch b = new Branch();
+                b.setId(result.getInt(7));
+                b.setName(result.getString(8));
 
                 Orders o = new Orders();
                 o.setId(result.getInt(1));
-                o.setOrderDate(result.getDate(2));
-                o.setDeliveryDate(result.getDate(3));
-                o.setTotalCost(result.getDouble(4));
+                o.setOrderDate(result.getDate(9));
+                o.setDeliveryDate(result.getDate(10));
+                o.setStatus(result.getString(11));
+                o.setTotalCost(result.getDouble(12));
+                o.setCustomerId(c);
+                o.setBranchId(b);
 
                 orders.add(o);
             }
@@ -120,58 +124,60 @@ public class OrdersResourceImpl implements OrdersResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT \n" +
-                "    o.id,\n" +
-                "    o.order_date,\n" +
-                "    o.delivery_date,\n" +
-                "    o.total_cost,\n" +
-                "    p.id,\n" +
-                "    p.name,\n" +
-                "    p.description,\n" +
-                "    po.quantity,\n" +
-                "    p.price,\n" +
-                "    c.user_id,\n" +
-                "    u.email,\n" +
-                "    c.phone_number\n" +
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	o.id,\n" +
+                "	u.id,\n" +
+                "	u.email,\n" +
+                "	u.last_name,\n" +
+                "	u.first_name,\n" +
+                "	c.phone_number,\n" +
+                "	b.id,\n" +
+                "	b.name,\n" +
+                "	order_date,\n" +
+                "	delivery_date,\n" +
+                "	o.status,\n" +
+                "	SUM(p.price * po.quantity) total\n" +
                 "FROM orders o\n" +
-                "LEFT JOIN product_order po\n" +
+                "INNER JOIN product_order po\n" +
                 "ON po.order_id = o.id\n" +
-                "LEFT JOIN product p\n" +
+                "INNER JOIN product p\n" +
                 "ON po.product_id = p.id\n" +
-                "LEFT JOIN customer c\n" +
+                "INNER JOIN customer c\n" +
                 "ON o.customer_id = c.id\n" +
-                "LEFT JOIN user u\n" +
+                "INNER JOIN user u\n" +
                 "ON c.user_id = u.id\n" +
-                "WHERE o.id = " + id); 
+                "INNER JOIN branch b\n" +
+                "ON o.branch_id = b.id\n" +
+                "WHERE o.id = " + id + "\n" + 
+                "GROUP BY o.id");
 
             while (result.next()) {
-                Product p = new Product();
-                p.setId(result.getInt(5));
-                p.setName(result.getString(6));
-                p.setDescription(result.getString(7));
-                p.setPrice(result.getDouble(9));
-
-                ProductOrder po = new ProductOrder();
-                po.setQuantity(result.getInt(8));
 
                 User u = new User();
-                u.setId(result.getInt(10));
-                u.setEmail(result.getString(11));
+                u.setId(result.getInt(2));
+                u.setEmail(result.getString(3));
+                u.setLastName(result.getString(4));
+                u.setFirstName(result.getString(5));
 
                 Customer c = new Customer();
                 c.setUserId(u);
-                c.setPhoneNumber(result.getString(12));
+                c.setPhoneNumber(result.getString(6));
+
+                Branch b = new Branch();
+                b.setId(result.getInt(7));
+                b.setName(result.getString(8));
 
                 o.setId(result.getInt(1));
-                o.setOrderDate(result.getDate(2));
-                o.setDeliveryDate(result.getDate(3));
-                o.setTotalCost(result.getDouble(4));
+                o.setOrderDate(result.getDate(9));
+                o.setDeliveryDate(result.getDate(10));
+                o.setStatus(result.getString(11));
+                o.setTotalCost(result.getDouble(12));
+                o.setCustomerId(c);
+                o.setBranchId(b);
             }
-            
         } catch (Exception e) {
             System.out.println(e);
         }
-
  
         return o;
     }
@@ -187,53 +193,58 @@ public class OrdersResourceImpl implements OrdersResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT \n" +
-                "    o.id,\n" +
-                "    o.order_date,\n" +
-                "    o.delivery_date,\n" +
-                "    o.total_cost,\n" +
-                "    p.id,\n" +
-                "    p.name,\n" +
-                "    p.description,\n" +
-                "    po.quantity,\n" +
-                "    p.price,\n" +
-                "    c.user_id,\n" +
-                "    u.email,\n" +
-                "    c.phone_number\n" +
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	o.id,\n" +
+                "	u.id,\n" +
+                "	u.email,\n" +
+                "	u.last_name,\n" +
+                "	u.first_name,\n" +
+                "	c.phone_number,\n" +
+                "	b.id,\n" +
+                "	b.name,\n" +
+                "	order_date,\n" +
+                "	delivery_date,\n" +
+                "	o.status,\n" +
+                "	SUM(p.price * po.quantity) total\n" +
                 "FROM orders o\n" +
-                "LEFT JOIN product_order po\n" +
+                "INNER JOIN product_order po\n" +
                 "ON po.order_id = o.id\n" +
-                "LEFT JOIN product p\n" +
+                "INNER JOIN product p\n" +
                 "ON po.product_id = p.id\n" +
-                "LEFT JOIN customer c\n" +
+                "INNER JOIN customer c\n" +
                 "ON o.customer_id = c.id\n" +
-                "LEFT JOIN user u\n" +
+                "INNER JOIN user u\n" +
                 "ON c.user_id = u.id\n" +
-                "WHERE c.user_id = " + id); 
+                "INNER JOIN branch b\n" +
+                "ON o.branch_id = b.id\n" +
+                "WHERE u.id = " + id + "\n" +
+                "GROUP BY o.id");
 
             while (result.next()) {
-                Product p = new Product();
-                p.setId(result.getInt(5));
-                p.setName(result.getString(6));
-                p.setDescription(result.getString(7));
-                p.setPrice(result.getDouble(9));
-
-                ProductOrder po = new ProductOrder();
-                po.setQuantity(result.getInt(8));
 
                 User u = new User();
-                u.setId(result.getInt(10));
-                u.setEmail(result.getString(11));
+                u.setId(result.getInt(2));
+                u.setEmail(result.getString(3));
+                u.setLastName(result.getString(4));
+                u.setFirstName(result.getString(5));
 
                 Customer c = new Customer();
                 c.setUserId(u);
-                c.setPhoneNumber(result.getString(12));
+                c.setPhoneNumber(result.getString(6));
+                
+                Branch b = new Branch();
+                b.setId(result.getInt(7));
+                b.setName(result.getString(8));
 
                 Orders o = new Orders();
                 o.setId(result.getInt(1));
-                o.setOrderDate(result.getDate(2));
-                o.setDeliveryDate(result.getDate(3));
-                o.setTotalCost(result.getDouble(4));
+                o.setOrderDate(result.getDate(9));
+                o.setDeliveryDate(result.getDate(10));
+                o.setStatus(result.getString(11));
+                o.setTotalCost(result.getDouble(12));
+                o.setCustomerId(c);
+                o.setBranchId(b);
+
                 orders.add(o);
             }
             
