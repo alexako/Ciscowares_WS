@@ -5,6 +5,7 @@
  */
 package com.dlr.ciscoware_ws.v1.resources.impl;
 
+import com.dlr.ciscoware_ws.v1.resources.Password;
 import com.dlr.ciscoware_ws.v1.resources.User;
 import com.dlr.ciscoware_ws.v1.resources.UserResource;
 import java.util.ArrayList;
@@ -42,15 +43,30 @@ public class UserResourceImpl implements UserResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM user");
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	u.id,\n" +
+                "	u.email,\n" +
+                "	u.first_name,\n" +
+                "	u.last_name,\n" +
+                "	u.role,\n" +
+                "	p.content\n" +
+                "FROM user u\n" +
+                "INNER JOIN password p\n" +
+                "ON u.id = p.user_id;");
 
             while (result.next()) {
+                Password p = new Password();
+                p.setContent(result.getString(6));
+                List<Password> cp = new ArrayList<>();
+                cp.add(p);
+
                 User u = new User();
                 u.setId(result.getInt(1));
                 u.setEmail(result.getString(2));
                 u.setFirstName(result.getString(3));
                 u.setLastName(result.getString(4));
                 u.setRole(result.getString(5));
+                u.setPasswordCollection(cp);
                 users.add(u);
             }
             
@@ -73,14 +89,30 @@ public class UserResourceImpl implements UserResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM user u WHERE u.id = " + id);
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	u.id,\n" +
+                "	u.email,\n" +
+                "	u.first_name,\n" +
+                "	u.last_name,\n" +
+                "	u.role,\n" +
+                "	p.content\n" +
+                "FROM user u\n" +
+                "INNER JOIN password p\n" +
+                "ON u.id = p.user_id" +
+                "WHERE u.id = " + id);
 
             while (result.next()) {
+                Password p = new Password();
+                p.setContent(result.getString(6));
+                List<Password> cp = new ArrayList<>();
+                cp.add(p);
+
                 u.setId(result.getInt(1));
                 u.setEmail(result.getString(2));
                 u.setFirstName(result.getString(3));
                 u.setLastName(result.getString(4));
                 u.setRole(result.getString(5));
+                u.setPasswordCollection(cp);
             }
             
             conn.close();
@@ -192,5 +224,39 @@ public class UserResourceImpl implements UserResource {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    @Override
+    @GET
+    @Path("login")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public String login(String data) {
+
+        JSONObject obj = new JSONObject(data);
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	u.email,\n" +
+                "	p.content\n" +
+                "FROM user u\n" +
+                "INNER JOIN password p\n" +
+                "ON u.id = p.user_id;");
+
+            while (result.next()) {
+                if (result.getString(1).equals(obj.getString("email"))
+                        && result.getString(2).equals(obj.getString("password"))) {
+                    return result.getString(1) + ": Access granted";
+                }
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return "Access denied";
     }
 }
