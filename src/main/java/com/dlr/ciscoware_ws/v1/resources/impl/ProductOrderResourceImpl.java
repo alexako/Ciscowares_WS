@@ -5,7 +5,10 @@
  */
 package com.dlr.ciscoware_ws.v1.resources.impl;
 
+import com.dlr.ciscoware_ws.v1.resources.Orders;
 import com.dlr.ciscoware_ws.v1.resources.Product;
+import com.dlr.ciscoware_ws.v1.resources.ProductOrder;
+import com.dlr.ciscoware_ws.v1.resources.ProductOrderResource;
 import com.dlr.ciscoware_ws.v1.resources.ProductResource;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,8 @@ import org.json.JSONObject;
  *
  * @author alex
  */
-@Path("/products")
-public class ProductResourceImpl implements ProductResource {
+@Path("/product-orders")
+public class ProductOrderResourceImpl implements ProductOrderResource {
 
 
     String url = "jdbc:mysql://database.alexjreyes.com:3306/java_project";
@@ -34,56 +37,73 @@ public class ProductResourceImpl implements ProductResource {
     String pass = "mapua";
 
     @Override
-    public List<Product> getProducts() {
+    public List<ProductOrder> getProductOrders() {
 
-        List<Product> products = new ArrayList<>();
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM product");
-
-            while (result.next()) {
-                Product p = new Product();
-                p.setId(result.getInt(1));
-                p.setDescription(result.getString(2));
-                p.setName(result.getString(3));
-                p.setPrice(result.getDouble(4));
-                products.add(p);
-            }
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
- 
-        return products;
-    }
-
-    @Override
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Product getProduct(@PathParam("id") int id) {
-        
-        Product p = new Product();
+        List<ProductOrder> productOrders = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
-                + "id, "
-                + "name, "
-                + "description, "
-                + "price "
-                + "FROM product WHERE id = " + id);
+                + "po.id, "
+                + "po.product_id, "
+                + "po.order_id, "
+                + "p.name, "
+                + "p.description, "
+                + "p.price "
+                + "FROM product_order po"
+                + "LEFT JOIN product p"
+                + "ON po.product_id = p.id");
 
             while (result.next()) {
-                p.setId(result.getInt(1));
-                p.setName(result.getString(3));
-                p.setDescription(result.getString(2));
-                p.setPrice(result.getDouble(4));
+                Product p = new Product();
+                p.setId(result.getInt(2));
+                p.setName(result.getString(4));
+                p.setDescription(result.getString(5));
+                p.setPrice(result.getDouble(6));
+
+                Orders o = new Orders();
+                o.setId(result.getInt(3));
+
+                ProductOrder po = new ProductOrder();
+                po.setId(result.getInt(1));
+                po.setProductId(p);
+                po.setOrderId(o);
+                productOrders.add(po);
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+ 
+        return productOrders;
+    }
+
+    @Override
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ProductOrder getProductOrder(@PathParam("id") int id) {
+        
+        ProductOrder po = new ProductOrder();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT * FROM product_order WHERE id = " + id);
+
+            while (result.next()) {
+                Product p = new Product();
+                p.setId(result.getInt(2));
+
+                Orders o = new Orders();
+                o.setId(result.getInt(3));
+
+                po.setId(result.getInt(1));
+                po.setProductId(p);
+                po.setOrderId(o);
             }
             
             conn.close();
@@ -92,7 +112,7 @@ public class ProductResourceImpl implements ProductResource {
         }
 
  
-        return p;
+        return po;
     }
 
     @Override
@@ -100,27 +120,32 @@ public class ProductResourceImpl implements ProductResource {
     @Path("/")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Product createProduct(String data) {
+    public ProductOrder createProductOrder(String data) {
         JSONObject obj = new JSONObject(data);
         Product p = new Product();
+        p.setId(obj.getInt("productId"));
 
-        p.setName(obj.getString("name"));
-        p.setDescription(obj.getString("description"));
-        p.setPrice(obj.getDouble("price"));
+        Orders o = new Orders();
+        o.setId(obj.getInt("orderId"));
+
+        ProductOrder po = new ProductOrder();
+        po.setProductId(p);
+        po.setOrderId(o);
+        po.setQuantity(obj.getInt("quantity"));
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String insertQuery = "INSERT INTO product(name, description, price)\n" +
+            String insertQuery = "INSERT INTO product_order(product_id, order_id, quantity)\n" +
                 "VALUES (?, ?, ?);";
 
             PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
-            preparedStmt.setString(1, p.getName());
-            preparedStmt.setString(2, p.getDescription());
-            preparedStmt.setDouble(3, p.getPrice());
+            preparedStmt.setInt(1, po.getProductId().getId());
+            preparedStmt.setInt(2, po.getOrderId().getId());
+            preparedStmt.setInt(3, po.getQuantity());
 
             if (preparedStmt.executeUpdate() == 0) {
-                throw new Exception("ERROR: product was not created");
+                throw new Exception("ERROR: product order was not created");
             }
             
             conn.close();
@@ -128,7 +153,7 @@ public class ProductResourceImpl implements ProductResource {
             System.out.println(e);
         }
 
-        return p;
+        return po;
     }
 
     @Override
@@ -136,30 +161,35 @@ public class ProductResourceImpl implements ProductResource {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Product updateProduct(@PathParam("id") int id, String data) {
+    public ProductOrder updateProductOrder(@PathParam("id") int id, String data) {
         JSONObject obj = new JSONObject(data);
         Product p = new Product();
+        p.setId(obj.getInt("productId"));
 
-        p.setName(obj.getString("name"));
-        p.setDescription(obj.getString("description"));
-        p.setPrice(obj.getDouble("price"));
+        Orders o = new Orders();
+        o.setId(obj.getInt("orderId"));
+
+        ProductOrder po = new ProductOrder();
+        po.setProductId(p);
+        po.setOrderId(o);
+        po.setQuantity(obj.getInt("quantity"));
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String updateQuery = "UPDATE product SET "
-                + "name = ?, "
-                + "description =  ?, "
-                + "price = ? "
-                + "WHERE id =" + id;
+            String updateQuery = "UPDATE product_order SET "
+                + "product_id = ?, "
+                + "order_id = ?, "
+                + "quantity = ? "
+                + "WHERE id = " + id;
 
             PreparedStatement preparedStmt = conn.prepareStatement(updateQuery);
-            preparedStmt.setString(1, p.getName());
-            preparedStmt.setString(2, p.getDescription());
-            preparedStmt.setDouble(3, p.getPrice());
+            preparedStmt.setInt(1, po.getProductId().getId());
+            preparedStmt.setInt(2, po.getOrderId().getId());
+            preparedStmt.setInt(3, po.getQuantity());
 
             if (preparedStmt.executeUpdate() == 0) {
-                throw new Exception("ERROR: product was not updated");
+                throw new Exception("ERROR: product order was not created");
             }
             
             conn.close();
@@ -167,29 +197,23 @@ public class ProductResourceImpl implements ProductResource {
             System.out.println(e);
         }
 
-        return p;
+        return po;
     }
 
     @Override
     @DELETE
     @Path("{id}")
-    public void removeProduct(@PathParam("id") int id) {
+    public void removeProductOrder(@PathParam("id") int id) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
-            String inventoryQuery = "DELETE FROM inventory WHERE product_id = " + id;
-            String productOrderQuery = "DELETE FROM product_order WHERE product_id = " + id;
-            String deleteQuery = "DELETE FROM product WHERE id =" + id;
+            String deleteQuery = "DELETE FROM product_order WHERE id =" + id;
 
-            PreparedStatement inventoryStmt = conn.prepareStatement(inventoryQuery);
-            PreparedStatement productOrderStmt = conn.prepareStatement(productOrderQuery);
             PreparedStatement preparedStmt = conn.prepareStatement(deleteQuery);
 
-            if (inventoryStmt.executeUpdate() == 0
-                    || productOrderStmt.executeUpdate() == 0
-                    || preparedStmt.executeUpdate() == 0) {
-                throw new Exception("ERROR: product was not deleted");
+                if (preparedStmt.executeUpdate() == 0) {
+                throw new Exception("ERROR: product order was not deleted");
             }
             
             conn.close();

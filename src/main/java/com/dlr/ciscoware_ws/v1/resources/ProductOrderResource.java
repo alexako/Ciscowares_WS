@@ -18,25 +18,25 @@ import javax.ws.rs.core.MediaType;
  *
  * @author alex
  */
-public interface ProductResource {
+public interface ProductOrderResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    List<Product> getProducts();
+    List<ProductOrder> getProductOrders();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    Product getProduct(int id);
+    ProductOrder getProductOrder(int id);
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    Product createProduct(String data);
+    ProductOrder createProductOrder(String data);
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    Product updateProduct(int id, String data);
+    ProductOrder updateProductOrder(int id, String data);
 
     @DELETE
-    void removeProduct(int id);
+    void removeProductOrder(int id);
 }
