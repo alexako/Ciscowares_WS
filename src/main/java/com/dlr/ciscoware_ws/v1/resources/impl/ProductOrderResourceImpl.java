@@ -46,14 +46,14 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
-                + "po.id, "
-                + "po.product_id, "
-                + "po.order_id, "
-                + "p.name, "
-                + "p.description, "
-                + "p.price "
-                + "FROM product_order po"
-                + "LEFT JOIN product p"
+                + "po.id,\n"
+                + "po.product_id,\n"
+                + "po.order_id,\n"
+                + "p.name,\n"
+                + "p.description,\n"
+                + "p.price\n"
+                + "FROM product_order po\n"
+                + "INNER JOIN product p\n"
                 + "ON po.product_id = p.id");
 
             while (result.next()) {
