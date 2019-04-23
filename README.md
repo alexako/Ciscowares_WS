@@ -113,6 +113,72 @@ Base URL: `http://web-service.alexjreyes.com:8080/Ciscoware_WS-1.0/`
 
 #### Admins `/admins`
 
+---
+
+### Create/Edit JSON structure examples `POST`/`PUT`
+
+Admin
+
+```js
+{
+	"firstName": "afirst",
+	"lastName": "aLast",
+	"email": "POSTemail@test.com",
+	"role": "admin",
+	"phoneNumber": "777-3213",
+	"password": "adminPassword",
+	"branchId": "1"
+}
+```
+
+Customer
+
+```js
+{
+    "email": "POST@email.com",
+    "firstName": "fPOST",
+    "lastName": "lPOST",
+    "phoneNumber": "654-7654",
+    "city": "Quezon City",
+    "country": "Philippines",
+    "province": "NCR",
+    "street": "123 Post Avenue",
+    "zipCode": "1259",
+    "password": "postpass",
+    "role": "customer"
+}
+```
+
+Product
+
+```js
+{
+    "description": "Networking cable",
+    "name": "CAT5 16\" 1GB",
+    "price": "215.5"
+}
+```
+
+#### Inventory
+
+```js
+{
+    "productId": 1,
+    "quantity": 250,
+    "branchId": 3
+}
+```
+
+#### Order
+
+```js
+{
+    "customerId": "2",
+    "branchId": "1",
+    "totalCost": "150.25"
+}
+```
+
 
 ---
 
