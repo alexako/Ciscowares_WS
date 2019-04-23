@@ -40,6 +40,6 @@ public interface UserResource {
     @DELETE
     void removeUser(int id);
 
-    @GET
+    @POST
     public String login(String data);
 }

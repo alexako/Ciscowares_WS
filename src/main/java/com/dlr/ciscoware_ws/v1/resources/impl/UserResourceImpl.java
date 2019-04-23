@@ -227,12 +227,14 @@ public class UserResourceImpl implements UserResource {
     }
 
     @Override
-    @GET
+    @POST
     @Path("login")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public String login(String data) {
 
         JSONObject obj = new JSONObject(data);
+        JSONObject resp = new JSONObject();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -248,7 +250,9 @@ public class UserResourceImpl implements UserResource {
             while (result.next()) {
                 if (result.getString(1).equals(obj.getString("email"))
                         && result.getString(2).equals(obj.getString("password"))) {
-                    return result.getString(1) + ": Access granted";
+                    resp.put("code", "200");
+                    resp.put("message", "Access granted");
+                    return resp.toString();
                 }
             }
             
@@ -257,6 +261,8 @@ public class UserResourceImpl implements UserResource {
             System.out.println(e);
         }
 
-        return "Access denied";
+        resp.put("code", "401");
+        resp.put("message", "Access denied");
+        return resp.toString();
     }
 }
