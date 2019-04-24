@@ -132,7 +132,7 @@ public class CustomerResourceImpl implements CustomerResource {
 
             while (result.next()) {
                 User u = new User();
-                u.setId(result.getInt(1));
+                u.setId(result.getInt(2));
                 u.setLastName(result.getString(3));
                 u.setFirstName(result.getString(4));
                 u.setEmail(result.getString(5));
@@ -147,7 +147,7 @@ public class CustomerResourceImpl implements CustomerResource {
                 ca.setZipCode(result.getString(12));
                 address.add(ca);
 
-                c.setId(result.getInt(2));
+                c.setId(result.getInt(1));
                 c.setPhoneNumber(result.getString(7));
                 c.setUserId(u);
                 c.setCustomerAddressCollection(address);
