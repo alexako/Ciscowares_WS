@@ -7,6 +7,7 @@ package com.dlr.ciscoware_ws.v1.resources;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -72,6 +73,7 @@ public class Orders implements Serializable {
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Customer customerId;
+    private List<ProductOrder> productOrders;
 
     public Orders() {
     }
@@ -148,6 +150,14 @@ public class Orders implements Serializable {
 
     public void setCustomerId(Customer customerId) {
         this.customerId = customerId;
+    }
+
+    public List<ProductOrder> getProductOrders() {
+        return this.productOrders;
+    }
+
+    public void setProductOrders(List<ProductOrder> productOrders) {
+        this.productOrders = productOrders;
     }
 
     @Override

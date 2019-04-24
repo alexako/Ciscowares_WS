@@ -25,6 +25,10 @@ public interface ProductOrderResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    List<ProductOrder> getProductOrdersByOrder(int id);
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
     ProductOrder getProductOrder(int id);
 
     @POST

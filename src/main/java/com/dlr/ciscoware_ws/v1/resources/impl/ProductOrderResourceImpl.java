@@ -83,6 +83,56 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
 
     @Override
     @GET
+    @Path("/order/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<ProductOrder> getProductOrdersByOrder(int id) {
+
+        List<ProductOrder> productOrders = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT "
+                + "po.id,\n"
+                + "po.product_id,\n"
+                + "po.order_id,\n"
+                + "po.quantity,\n"
+                + "p.name,\n"
+                + "p.description,\n"
+                + "p.price\n"
+                + "FROM product_order po\n"
+                + "INNER JOIN product p\n"
+                + "ON po.product_id = p.id\n"
+                + "WHERE po.order_id = " + id);
+
+            while (result.next()) {
+                Product p = new Product();
+                p.setId(result.getInt(2));
+                p.setName(result.getString(5));
+                p.setDescription(result.getString(6));
+                p.setPrice(result.getDouble(7));
+
+                Orders o = new Orders();
+                o.setId(result.getInt(3));
+
+                ProductOrder po = new ProductOrder();
+                po.setId(result.getInt(1));
+                po.setProductId(p);
+                po.setOrderId(o);
+                po.setQuantity(result.getInt(4));
+                productOrders.add(po);
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+ 
+        return productOrders;
+    }
+
+    @Override
+    @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public ProductOrder getProductOrder(@PathParam("id") int id) {

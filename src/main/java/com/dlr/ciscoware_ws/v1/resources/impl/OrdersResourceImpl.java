@@ -63,7 +63,7 @@ public class OrdersResourceImpl implements OrdersResource {
                 "	order_date,\n" +
                 "	delivery_date,\n" +
                 "	o.status,\n" +
-                "	SUM(p.price * po.quantity) total\n" +
+                "	SUM(p.price * po.quantity) total,\n" +
                 "FROM orders o\n" +
                 "INNER JOIN product_order po\n" +
                 "ON po.order_id = o.id\n" +
@@ -153,6 +153,9 @@ public class OrdersResourceImpl implements OrdersResource {
 
             while (result.next()) {
 
+                ProductOrderResourceImpl res = new ProductOrderResourceImpl();
+                List<ProductOrder> productOrders = res.getProductOrdersByOrder(result.getInt(1));
+
                 User u = new User();
                 u.setId(result.getInt(2));
                 u.setEmail(result.getString(3));
@@ -174,6 +177,7 @@ public class OrdersResourceImpl implements OrdersResource {
                 o.setTotalCost(result.getDouble(12));
                 o.setCustomerId(c);
                 o.setBranchId(b);
+                o.setProductOrders(productOrders);
             }
         } catch (Exception e) {
             System.out.println(e);
