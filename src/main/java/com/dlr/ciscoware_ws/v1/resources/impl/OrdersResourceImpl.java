@@ -116,7 +116,7 @@ public class OrdersResourceImpl implements OrdersResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Orders getOrder(@PathParam("id") int id) {
+    public Orders getOrder(@PathParam("id") String id) {
 
         Orders o = new Orders();
 
@@ -296,6 +296,7 @@ public class OrdersResourceImpl implements OrdersResource {
                 + "status)\n" +
                 "VALUES (?, ?, ?, ?, ?, ?);";
 
+
             PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
             preparedStmt.setInt(1, o.getCustomerId().getId());
             preparedStmt.setInt(2, o.getBranchId().getId());
@@ -307,11 +308,21 @@ public class OrdersResourceImpl implements OrdersResource {
             if (preparedStmt.executeUpdate() == 0) {
                 throw new Exception("ERROR: order was not created");
             }
+
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	MAX(id)\n" +
+                "FROM orders");
+
+            while (result.next()) {
+                o.setId(result.getInt(1));
+            }
             
             conn.close();
         } catch (Exception e) {
             System.out.println(e);
         }
+
 
         return o;
     }

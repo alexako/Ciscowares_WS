@@ -25,7 +25,7 @@ public interface OrdersResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    Orders getOrder(int id);
+    Orders getOrder(String id);
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
