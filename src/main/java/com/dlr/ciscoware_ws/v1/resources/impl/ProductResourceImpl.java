@@ -96,6 +96,41 @@ public class ProductResourceImpl implements ProductResource {
     }
 
     @Override
+    @GET
+    @Path("/name/{name}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Product getProductByName(@PathParam("name") String name) {
+        
+        Product p = new Product();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT "
+                + "id, "
+                + "name, "
+                + "description, "
+                + "price "
+                + "FROM product WHERE name like '" + name + "'");
+
+            while (result.next()) {
+                p.setId(result.getInt(1));
+                p.setName(result.getString(3));
+                p.setDescription(result.getString(2));
+                p.setPrice(result.getDouble(4));
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+ 
+        return p;
+    }
+
+    @Override
     @POST
     @Path("/")
     @Consumes({MediaType.APPLICATION_JSON})

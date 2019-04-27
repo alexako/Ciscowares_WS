@@ -241,17 +241,40 @@ public class UserResourceImpl implements UserResource {
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT\n" +
+                "	u.id,\n" +
                 "	u.email,\n" +
+                "	u.first_name,\n" +
+                "	u.last_name,\n" +
+                "	u.role,\n" +
                 "	p.content\n" +
                 "FROM user u\n" +
                 "INNER JOIN password p\n" +
                 "ON u.id = p.user_id;");
 
             while (result.next()) {
-                if (result.getString(1).equals(obj.getString("email"))
-                        && result.getString(2).equals(obj.getString("password"))) {
+
+                User u = new User();
+                u.setId(result.getInt(1));
+                u.setEmail(result.getString(2));
+                u.setFirstName(result.getString(3));
+                u.setLastName(result.getString(4));
+                u.setRole(result.getString(5));
+
+                Password p = new Password();
+                p.setContent(result.getString(6));
+
+                JSONObject uObj = new JSONObject();
+                uObj.put("id", u.getId());
+                uObj.put("email", u.getEmail());
+                uObj.put("firstName", u.getFirstName());
+                uObj.put("lastName", u.getLastName());
+                uObj.put("role", u.getRole());
+
+                if (u.getEmail().equals(obj.getString("email"))
+                        && p.getContent().equals(obj.getString("password"))) {
                     resp.put("code", "200");
                     resp.put("message", "Access granted");
+                    resp.put("user", uObj);
                     return resp.toString();
                 }
             }
