@@ -45,6 +45,7 @@ public class ProductResourceImpl implements ProductResource {
             ResultSet result = stmt.executeQuery("SELECT "
                 + "id, "
                 + "description, "
+                + "title, "
                 + "name, "
                 + "price, "
                 + "category "
@@ -54,9 +55,10 @@ public class ProductResourceImpl implements ProductResource {
                 Product p = new Product();
                 p.setId(result.getInt(1));
                 p.setDescription(result.getString(2));
-                p.setName(result.getString(3));
-                p.setPrice(result.getDouble(4));
-                p.setCategory(result.getString(5));
+                p.setTitle(result.getString(3));
+                p.setName(result.getString(4));
+                p.setPrice(result.getDouble(5));
+                p.setCategory(result.getString(6));
                 products.add(p);
             }
             
@@ -81,6 +83,7 @@ public class ProductResourceImpl implements ProductResource {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
                 + "id, "
+                + "title, "
                 + "name, "
                 + "description, "
                 + "price, "
@@ -89,10 +92,11 @@ public class ProductResourceImpl implements ProductResource {
 
             while (result.next()) {
                 p.setId(result.getInt(1));
-                p.setName(result.getString(2));
-                p.setDescription(result.getString(3));
-                p.setPrice(result.getDouble(4));
-                p.setCategory(result.getString(5));
+                p.setTitle(result.getString(2));
+                p.setName(result.getString(3));
+                p.setDescription(result.getString(4));
+                p.setPrice(result.getDouble(5));
+                p.setCategory(result.getString(6));
             }
             
             conn.close();
@@ -118,6 +122,7 @@ public class ProductResourceImpl implements ProductResource {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
                 + "id, "
+                + "title, "
                 + "name, "
                 + "description, "
                 + "price, "
@@ -126,10 +131,11 @@ public class ProductResourceImpl implements ProductResource {
 
             while (result.next()) {
                 p.setId(result.getInt(1));
-                p.setName(result.getString(2));
-                p.setDescription(result.getString(3));
-                p.setPrice(result.getDouble(4));
-                p.setCategory(result.getString(5));
+                p.setTitle(result.getString(2));
+                p.setName(result.getString(3));
+                p.setDescription(result.getString(4));
+                p.setPrice(result.getDouble(5));
+                p.setCategory(result.getString(6));
             }
             
             conn.close();
@@ -155,6 +161,7 @@ public class ProductResourceImpl implements ProductResource {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery("SELECT "
                 + "id, "
+                + "title, "
                 + "name, "
                 + "description, "
                 + "price, "
@@ -164,10 +171,11 @@ public class ProductResourceImpl implements ProductResource {
             while (result.next()) {
                 Product p = new Product();
                 p.setId(result.getInt(1));
-                p.setName(result.getString(2));
-                p.setDescription(result.getString(3));
-                p.setPrice(result.getDouble(4));
-                p.setCategory(result.getString(5));
+                p.setTitle(result.getString(2));
+                p.setName(result.getString(3));
+                p.setDescription(result.getString(4));
+                p.setPrice(result.getDouble(5));
+                p.setCategory(result.getString(6));
                 products.add(p);
             }
             

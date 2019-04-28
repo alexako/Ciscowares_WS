@@ -60,6 +60,7 @@ public class Product implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<Inventory> inventoryCollection;
     private String category;
+    private String title;
 
     public Product() {
     }
@@ -111,6 +112,14 @@ public class Product implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @XmlTransient
