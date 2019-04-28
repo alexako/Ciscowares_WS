@@ -63,7 +63,7 @@ public class OrdersResourceImpl implements OrdersResource {
                 "	order_date,\n" +
                 "	delivery_date,\n" +
                 "	o.status,\n" +
-                "	SUM(p.price * po.quantity) total,\n" +
+                "	SUM(p.price * po.quantity) total\n" +
                 "FROM orders o\n" +
                 "INNER JOIN product_order po\n" +
                 "ON po.order_id = o.id\n" +
