@@ -42,7 +42,13 @@ public class ProductResourceImpl implements ProductResource {
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM product");
+            ResultSet result = stmt.executeQuery("SELECT "
+                + "id, "
+                + "description, "
+                + "name, "
+                + "price, "
+                + "category "
+                + " FROM product");
 
             while (result.next()) {
                 Product p = new Product();
@@ -50,6 +56,7 @@ public class ProductResourceImpl implements ProductResource {
                 p.setDescription(result.getString(2));
                 p.setName(result.getString(3));
                 p.setPrice(result.getDouble(4));
+                p.setCategory(result.getString(5));
                 products.add(p);
             }
             
@@ -76,14 +83,16 @@ public class ProductResourceImpl implements ProductResource {
                 + "id, "
                 + "name, "
                 + "description, "
-                + "price "
+                + "price, "
+                + "category "
                 + "FROM product WHERE id = " + id);
 
             while (result.next()) {
                 p.setId(result.getInt(1));
-                p.setName(result.getString(3));
-                p.setDescription(result.getString(2));
+                p.setName(result.getString(2));
+                p.setDescription(result.getString(3));
                 p.setPrice(result.getDouble(4));
+                p.setCategory(result.getString(5));
             }
             
             conn.close();
@@ -111,14 +120,16 @@ public class ProductResourceImpl implements ProductResource {
                 + "id, "
                 + "name, "
                 + "description, "
-                + "price "
+                + "price, "
+                + "category "
                 + "FROM product WHERE name like '" + name + "'");
 
             while (result.next()) {
                 p.setId(result.getInt(1));
-                p.setName(result.getString(3));
-                p.setDescription(result.getString(2));
+                p.setName(result.getString(2));
+                p.setDescription(result.getString(3));
                 p.setPrice(result.getDouble(4));
+                p.setCategory(result.getString(5));
             }
             
             conn.close();
@@ -128,6 +139,45 @@ public class ProductResourceImpl implements ProductResource {
 
  
         return p;
+    }
+
+    @Override
+    @GET
+    @Path("/category/{category}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Product> getProductsByCategory(@PathParam("category") String category) {
+
+        List<Product> products = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT "
+                + "id, "
+                + "name, "
+                + "description, "
+                + "price, "
+                + "category "
+                + "FROM product WHERE category like '" + category + "'");
+
+            while (result.next()) {
+                Product p = new Product();
+                p.setId(result.getInt(1));
+                p.setName(result.getString(2));
+                p.setDescription(result.getString(3));
+                p.setPrice(result.getDouble(4));
+                p.setCategory(result.getString(5));
+                products.add(p);
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+ 
+        return products;
     }
 
     @Override

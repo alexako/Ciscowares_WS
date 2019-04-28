@@ -59,6 +59,7 @@ public class Product implements Serializable {
     private Collection<ProductOrder> productOrderCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<Inventory> inventoryCollection;
+    private String category;
 
     public Product() {
     }
@@ -102,6 +103,14 @@ public class Product implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @XmlTransient

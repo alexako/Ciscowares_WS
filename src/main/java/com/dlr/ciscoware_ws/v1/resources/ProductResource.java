@@ -31,6 +31,10 @@ public interface ProductResource {
     @Produces({MediaType.APPLICATION_JSON})
     Product getProductByName(String name);
 
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    List<Product> getProductsByCategory(String name);
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
