@@ -85,7 +85,7 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
     @GET
     @Path("/order/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<ProductOrder> getProductOrdersByOrder(int id) {
+    public List<ProductOrder> getProductOrdersByOrder(@PathParam("id") int id) {
 
         List<ProductOrder> productOrders = new ArrayList<>();
 
