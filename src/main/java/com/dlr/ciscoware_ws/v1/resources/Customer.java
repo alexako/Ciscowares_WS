@@ -56,6 +56,7 @@ public class Customer implements Serializable {
     private User userId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
     private Collection<Orders> ordersCollection;
+    private CustomerAddress customerAddress;
 
     public Customer() {
     }
@@ -96,6 +97,14 @@ public class Customer implements Serializable {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+
+    public CustomerAddress getCustomerAddress() {
+        return this.customerAddress;
+    }
+
+    public void setCustomerAddress(CustomerAddress customerAddress) {
+        this.customerAddress = customerAddress;
     }
 
     @XmlTransient

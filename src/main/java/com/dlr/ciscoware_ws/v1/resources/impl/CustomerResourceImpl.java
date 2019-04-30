@@ -122,13 +122,13 @@ public class CustomerResourceImpl implements CustomerResource {
                 "    ca.country,\n" +
                 "    ca.zip_code\n" +
                 "FROM customer c\n" +
-                "LEFT JOIN\n" +
+                "INNER JOIN\n" +
                 "user u\n" +
                 "ON c.user_id = u.id\n" +
                 "INNER JOIN\n" +
                 "customer_address ca\n" +
                 "ON ca.customer_id = c.id\n" +
-                "WHERE u.id=" + id);
+                "WHERE c.id=" + id);
 
             while (result.next()) {
                 User u = new User();
@@ -138,19 +138,17 @@ public class CustomerResourceImpl implements CustomerResource {
                 u.setEmail(result.getString(5));
                 u.setRole(result.getString(6));
 
-                List<CustomerAddress> address = new ArrayList<>();
                 CustomerAddress ca = new CustomerAddress();
                 ca.setStreet(result.getString(8));
                 ca.setCity(result.getString(9));
                 ca.setProvince(result.getString(10));
                 ca.setCountry(result.getString(11));
                 ca.setZipCode(result.getString(12));
-                address.add(ca);
 
                 c.setId(result.getInt(1));
                 c.setPhoneNumber(result.getString(7));
                 c.setUserId(u);
-                c.setCustomerAddressCollection(address);
+                c.setCustomerAddress(ca);
             }
             
             conn.close();
