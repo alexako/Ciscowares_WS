@@ -72,9 +72,9 @@ public class AdminResourceImpl implements AdminResource {
             while (result.next()) {
                 User u = new User();
                 u.setId(result.getInt(2));
-                u.setEmail(result.getString(3));
+                u.setLastName(result.getString(3));
                 u.setFirstName(result.getString(4));
-                u.setLastName(result.getString(5));
+                u.setEmail(result.getString(5));
                 u.setRole(result.getString(6));
 
                 BranchAddress ba = new BranchAddress();
@@ -141,9 +141,9 @@ public class AdminResourceImpl implements AdminResource {
             while (result.next()) {
                 User u = new User();
                 u.setId(result.getInt(2));
-                u.setEmail(result.getString(3));
+                u.setLastName(result.getString(3));
                 u.setFirstName(result.getString(4));
-                u.setLastName(result.getString(5));
+                u.setEmail(result.getString(5));
                 u.setRole(result.getString(6));
 
                 BranchAddress ba = new BranchAddress();

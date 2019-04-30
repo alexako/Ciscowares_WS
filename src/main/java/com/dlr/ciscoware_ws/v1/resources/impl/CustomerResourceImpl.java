@@ -197,7 +197,7 @@ public class CustomerResourceImpl implements CustomerResource {
             String customerQuery = "INSERT INTO customer(user_id, phone_number)\n" +
                 "VALUES (LAST_INSERT_ID(), ?);";
             String cAddressQuery = "INSERT INTO customer_address"
-                + "(customer_id, street, city, province, zip_code, country)\n" +
+                + "(customer_id, street, city, province, country, zip_code)\n" +
                 "VALUES (\n" +
                 "    LAST_INSERT_ID(),\n" +
                 "    ?,\n" +
