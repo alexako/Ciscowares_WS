@@ -443,7 +443,8 @@ public class OrdersResourceImpl implements OrdersResource {
                 + "branch_id = ?,"
                 + "delivery_date = ?,"
                 + "total_cost = ?,"
-                + "status = ?;";
+                + "status = ?"
+                + "WHERE id = " + id;
 
             PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
             preparedStmt.setInt(1, o.getCustomerId().getId());
