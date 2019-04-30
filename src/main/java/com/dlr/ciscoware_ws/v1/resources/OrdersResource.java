@@ -31,6 +31,10 @@ public interface OrdersResource {
     @Produces({MediaType.APPLICATION_JSON})
     List<Orders> getOrdersByUser(int id);
 
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    List<Orders> getOrdersByBranch(int id);
+
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
