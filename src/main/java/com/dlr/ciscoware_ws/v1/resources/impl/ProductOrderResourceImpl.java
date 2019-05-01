@@ -40,11 +40,13 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
 
         List<ProductOrder> productOrders = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT "
+            result = stmt.executeQuery("SELECT "
                 + "po.id,\n"
                 + "po.product_id,\n"
                 + "po.order_id,\n"
@@ -76,6 +78,9 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return productOrders;
@@ -89,11 +94,13 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
 
         List<ProductOrder> productOrders = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT "
+            result = stmt.executeQuery("SELECT "
                 + "po.id,\n"
                 + "po.product_id,\n"
                 + "po.order_id,\n"
@@ -126,6 +133,9 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return productOrders;
@@ -139,11 +149,13 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
         
         ProductOrder po = new ProductOrder();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM product_order WHERE id = " + id);
+            result = stmt.executeQuery("SELECT * FROM product_order WHERE id = " + id);
 
             while (result.next()) {
                 Product p = new Product();
@@ -161,6 +173,9 @@ public class ProductOrderResourceImpl implements ProductOrderResource {
             conn.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
 
  

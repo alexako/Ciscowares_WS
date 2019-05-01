@@ -47,11 +47,13 @@ public class OrdersResourceImpl implements OrdersResource {
 
         List<Orders> orders = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	o.id,\n" +
                 "	u.id,\n" +
                 "	u.email,\n" +
@@ -107,6 +109,9 @@ public class OrdersResourceImpl implements OrdersResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return orders;
@@ -120,11 +125,14 @@ public class OrdersResourceImpl implements OrdersResource {
 
         Orders o = new Orders();
 
+        Connection conn = null;
+        ResultSet result = null;
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	o.id,\n" +
                 "	u.id,\n" +
                 "	u.email,\n" +
@@ -181,6 +189,9 @@ public class OrdersResourceImpl implements OrdersResource {
             }
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return o;
@@ -193,11 +204,13 @@ public class OrdersResourceImpl implements OrdersResource {
     public List<Orders> getOrdersByUser(@PathParam("id") int id) {
         List<Orders> orders = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	o.id,\n" +
                 "	u.id,\n" +
                 "	u.email,\n" +
@@ -254,6 +267,9 @@ public class OrdersResourceImpl implements OrdersResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
             
         return orders;
@@ -266,11 +282,13 @@ public class OrdersResourceImpl implements OrdersResource {
     public List<Orders> getOrdersByBranch(@PathParam("id") int id) {
         List<Orders> orders = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	o.id,\n" +
                 "	u.id,\n" +
                 "	u.email,\n" +
@@ -327,6 +345,9 @@ public class OrdersResourceImpl implements OrdersResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
             
         return orders;
@@ -361,9 +382,12 @@ public class OrdersResourceImpl implements OrdersResource {
 
         SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
 
+        ResultSet result = null;
+        Connection conn = null;
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             String insertQuery = "INSERT INTO orders("
                 + "customer_id,"
                 + "branch_id,"
@@ -387,7 +411,7 @@ public class OrdersResourceImpl implements OrdersResource {
             }
 
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	MAX(id)\n" +
                 "FROM orders");
 
@@ -395,9 +419,11 @@ public class OrdersResourceImpl implements OrdersResource {
                 o.setId(result.getInt(1));
             }
             
-            conn.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
 
 

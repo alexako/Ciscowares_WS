@@ -40,11 +40,13 @@ public class CustomerResourceImpl implements CustomerResource {
 
         List<Customer> customers = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT \n" +
+            result = stmt.executeQuery("SELECT \n" +
                 "    c.id,\n" +
                 "    u.id,\n" +
                 "    u.last_name,\n" +
@@ -91,6 +93,9 @@ public class CustomerResourceImpl implements CustomerResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return customers;
@@ -104,11 +109,13 @@ public class CustomerResourceImpl implements CustomerResource {
         
         Customer c = new Customer();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT \n" +
+            result = stmt.executeQuery("SELECT \n" +
                 "    c.id,\n" +
                 "    u.id,\n" +
                 "    u.last_name,\n" +
@@ -151,9 +158,11 @@ public class CustomerResourceImpl implements CustomerResource {
                 c.setCustomerAddress(ca);
             }
             
-            conn.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
 
  

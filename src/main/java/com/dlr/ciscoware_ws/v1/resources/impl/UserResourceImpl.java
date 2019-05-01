@@ -39,11 +39,13 @@ public class UserResourceImpl implements UserResource {
 
         List<User> users = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT\n" +
+            result = stmt.executeQuery("SELECT\n" +
                 "	u.id,\n" +
                 "	u.email,\n" +
                 "	u.first_name,\n" +
@@ -72,6 +74,9 @@ public class UserResourceImpl implements UserResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return users;

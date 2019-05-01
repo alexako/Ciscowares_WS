@@ -38,11 +38,13 @@ public class ProductResourceImpl implements ProductResource {
 
         List<Product> products = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT "
+            result = stmt.executeQuery("SELECT "
                 + "id, "
                 + "description, "
                 + "title, "
@@ -64,6 +66,9 @@ public class ProductResourceImpl implements ProductResource {
             
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
  
         return products;
@@ -116,11 +121,13 @@ public class ProductResourceImpl implements ProductResource {
         
         Product p = new Product();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT "
+            result = stmt.executeQuery("SELECT "
                 + "id, "
                 + "title, "
                 + "name, "
@@ -138,9 +145,11 @@ public class ProductResourceImpl implements ProductResource {
                 p.setCategory(result.getString(6));
             }
             
-            conn.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
 
  
@@ -155,11 +164,13 @@ public class ProductResourceImpl implements ProductResource {
 
         List<Product> products = new ArrayList<>();
 
+        Connection conn = null;
+        ResultSet result = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
+            conn = DriverManager.getConnection(url, user, pass);
             Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT "
+            result = stmt.executeQuery("SELECT "
                 + "id, "
                 + "title, "
                 + "name, "
@@ -179,9 +190,11 @@ public class ProductResourceImpl implements ProductResource {
                 products.add(p);
             }
             
-            conn.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (result != null) try { result.close(); } catch (SQLException logOrIgnore) {}
+            if (conn != null) try { conn.close(); } catch (SQLException logOrIgnore) {}
         }
 
  
